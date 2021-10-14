@@ -1,0 +1,154 @@
+ЗАДАЧА 1________________________________________________________________________________
+
+SELECT COUNT(NAME) FROM ANP.T_SQLT_ART 
+WHERE VOL_TRANSP > 1.0 AND NAME ILIKE('%ТОМАТ%');
+
+
+ЗАДАЧА 2________________________________________________________________________________
+
+SELECT COUNT(ART_ID) AS 'КОЛИЧЕСТВО ЗАПИСЕЙ' FROM ANP.T_SQLT_ART 
+WHERE VOL_TRANSP <= 0.2 AND ART_GRP_LVL_1_NAME = 'Йогурты';
+
+
+ЗАДАЧА 3________________________________________________________________________________
+
+SELECT COUNT(ART_ID) AS 'КОЛИЧЕСТВО ЗАПИСЕЙ' FROM ANP.T_SQLT_ART 
+WHERE WEIGTH > 5.0 OR VOL_TRANSP > 7.0;
+
+
+
+ЗАДАЧА 4_______ПРОВЕРИТЬ_________________________________________________________________________
+
+SELECT COUNT(ART_ID) FROM ANP.T_SQLT_ART 
+WHERE WEIGTH % 1.0 = 0 AND WEIGTH BETWEEN 1.0 AND 3.0
+VOL_TRANSP BETWEEN 3.0::decimal AND 5.0::decimal;
+
+ЗАДАЧА 5________ПРОВЕРИТЬ_____________________________________________________________________________
+
+SELECT ART_GRP_LVL_0_NAME AS 'ГР20',
+ART_GRP_LVL_1_NAME AS 'ГР21',
+ROUND(MIN(WEIGTH),2) AS 'МИНИМАЛЬНЫЙ ВЕС ТОВАРА',
+ROUND(MAX(WEIGTH),2) AS 'МАКСИМАЛЬНЫЙ ВЕС ТОВАРА',
+ROUND(AVG(WEIGTH),2) AS 'СРЕДНИЙ ВЕС ТОВАРА'
+FROM ANP.T_SQLT_ART 
+ORDER BY 'ГР20','ГР21';
+
+
+ЗАДАЧА 6_________________________________________________________________________________________________
+
+
+SELECT NAME AS 'НАЗВАНИЕ ТОВАРА',
+	floor(1/VOL_TRANSP) AS 'СКОЛЬКО ЦЕЛЫХ ТОВАРОВ ПОМЕСТИТСЯ В МЕШОК'
+FROM ANP.T_SQLT_ART 
+WHERE ART_GRP_LVL_2_NAME = 'Сливки'
+AND VOL_TRANSP <= 1.0:DECIMAL
+ORDER BY 'НАЗВАНИЕ ТОВАРА';
+
+
+
+ЗАДАЧА 7_______________________________________________________________________________________________________
+
+SELECT ROUND(cast(AVG(WEIGTH/VOL_TRANSP) as numeric),2) AS "СРЕДНЯЯ ПЛОТНОСТЬ"
+FROM ANP.T_SQLT_ART 
+
+
+
+ЗАДАЧА 8______________________________________________________________
+
+SELECT MIN(VOL_TRANSP) as "Объем товаров" FROM ANP.T_SQLT_ART UNION 
+SELECT MAX(VOL_TRANSP) FROM ANP.T_SQLT_ART UNION 
+SELECT AVG(VOL_TRANSP) FROM ANP.T_SQLT_ART 
+ORDER BY 1 DESC;
+
+
+
+ЗАДАЧА 9______________________________________________________________
+
+SELECT ART.NAME AS "НАЗВАНИЕ ТОВАРА",
+	ART.ART_GRP_LVL_0_NAME AS "НАИМЕНОВАНИЕ ГР20",
+	SUM(SALES.SALE) AS "СУММАРНАЯ ВЫРУЧКА",
+FROM ANP.T_SQLT_ART ART INNER JOIN ANP.T_SQLT_SALES SALES
+ON SALES.ART_ID = ART.ART_ID
+WHERE SALES.DAY_ID BEETWEEN '2018-01-01' AND '2018-12-31'
+ORDER BY 3 DESC
+LIMIT 5;
+
+
+
+
+ЗАДАЧА 10___________________________________________________________
+
+
+SELECT ART.ART_GRP_LVL_0_NAME AS "НАИМЕНОВАНИЕ ГР20",
+	ART.ART_GRP_LVL_1_NAME AS "НАИМЕНОВАНИЕ ГР21",
+	(SELECT REST_CP FROM ANP.T_SQLT_REST REST WHERE REST.ART_ID = ART.ART_ID AND DAY_ID = '2019-06-30') AS "Остатки, руб на 30 июня 2019 г.",
+	(SELECT REST_CP FROM ANP.T_SQLT_REST REST WHERE REST.ART_ID = ART.ART_ID AND DAY_ID = '2018-06-30') AS "Остатки, руб на 30 июня 2018 г.",
+
+	SUM(SALES.SALE) - SUM(SALES.SALE_COGS) AS "ДОХОДНОСТЬ",
+
+FROM ANP.T_SQLT_ART ART JOIN ANP.T_SQLT_SALES SALES
+ON SALES.ART_ID = ART.ART_ID
+ORDER BY 5 DESC
+LIMIT 5;
+
+
+
+ЗАДАЧА 11_________________________________________________________
+
+
+SELECT ART.ART_GRP_LVL_1_NAME AS "НАИМЕНОВАНИЕ ГР21",
+	ART.ART_GRP_LVL_0_NAME AS "НАИМЕНОВАНИЕ ГР20",
+	DISTINCT TXN.TXN_ID AS "ЧЕКОВ ВСЕГО",
+	DISTINCT TXN.ART_ID AS "ЧЕКОВ В ГРУППЕ",
+	abc(ROUND(( TXT.ART_ID / TXT.TXN_ID),8)) AS "ПРОНИКНОВЕНИЕ, ДОЛЯ"
+	
+FROM ANP.T_SQLT_ART ART JOIN ANP.T_SQLT_TXN TXN
+ON ART.ART_ID=TXN.ART_ID
+WHERE TXN.DAY_ID BETWEEN'2019-01-01' AND '2019-31-01'
+ORDER BY abc, ART.ART_GRP_LVL_1_NAME;
+
+
+ЗАДАЧА 12_____________________________________________________________
+
+
+
+
+ЗАДАЧА 13_____________________________________________________________
+
+WITH CTE AS (
+	SELECT TOP(5) WITH (SALES.SALES - SALES.COGS_SALES) AS "ДОХОДНОСТЬ, РУБ" FROM ANP.T_SQLT_SALES SALES
+	UNION
+	SELECT TOP(2) TXN.TXN_ID FROM ANP.T_SQLT_TXN TXN
+	
+
+
+ЗАДАЧА 14________________________________________________________________
+
+
+
+
+ЗАДАЧА 15______________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
