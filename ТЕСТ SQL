@@ -100,43 +100,12 @@ SELECT ART.ART_GRP_LVL_1_NAME AS "НАИМЕНОВАНИЕ ГР21",
 	ART.ART_GRP_LVL_0_NAME AS "НАИМЕНОВАНИЕ ГР20",
 	DISTINCT TXN.TXN_ID AS "ЧЕКОВ ВСЕГО",
 	DISTINCT TXN.ART_ID AS "ЧЕКОВ В ГРУППЕ",
-	abc(ROUND(( TXT.ART_ID / TXT.TXN_ID),8)) AS "ПРОНИКНОВЕНИЕ, ДОЛЯ"
+	ROUND(( TXT.ART_ID / TXT.TXN_ID),8) AS "ПРОНИКНОВЕНИЕ, ДОЛЯ"
 	
 FROM ANP.T_SQLT_ART ART JOIN ANP.T_SQLT_TXN TXN
 ON ART.ART_ID=TXN.ART_ID
 WHERE TXN.DAY_ID BETWEEN'2019-01-01' AND '2019-31-01'
-ORDER BY abc, ART.ART_GRP_LVL_1_NAME;
-
-
-ЗАДАЧА 12_____________________________________________________________
-
-
-
-
-ЗАДАЧА 13_____________________________________________________________
-
-WITH CTE AS (
-	SELECT TOP(5) WITH (SALES.SALES - SALES.COGS_SALES) AS "ДОХОДНОСТЬ, РУБ" FROM ANP.T_SQLT_SALES SALES
-	UNION
-	SELECT TOP(2) TXN.TXN_ID FROM ANP.T_SQLT_TXN TXN
-	
-
-
-ЗАДАЧА 14________________________________________________________________
-
-
-
-
-ЗАДАЧА 15______________________________________________________________
-
-
-
-
-
-
-
-
-
+ORDER BY 5;
 
 
 
